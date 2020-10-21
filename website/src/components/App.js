@@ -9,7 +9,7 @@ const App = () => {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <Container>
+      <Container fluid>
         <List>
         </List>
       </Container>

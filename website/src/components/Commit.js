@@ -9,7 +9,7 @@ const Commit = ({commits}) => {
       commits &&
         commits.map((v, k) => {
           return (
-            <Card className="text-center">
+            <Card key={k} className="text-center">
               <Col md={{ span: 4, offset: 4 }}>
                 <Card.Img style={{width:'100px'}} variant="top" src={v.Author.avatar_url ? v.Author.avatar_url: v.Committer.avatar_url} />
               </Col>
