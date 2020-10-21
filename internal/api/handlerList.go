@@ -3,21 +3,25 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 type repository struct {
-	Id        int    `json:"id"`
-	CommitUrl string `json:"commits_url"`
+	ID        int    `json:"id"`
+	CommitURL string `json:"commits_url"`
 	Name      string `json:"name"`
-	NextUrl   string `json:"nextUrl"`
+	NextURL   string `json:"nextUrl"`
 }
 
+type repositoryError struct {
+	Message string `json:"message"`
+}
 type listParameters struct {
 	TypeRepo  string `form:"type" binding:"omitempty,oneof=call public private forks sources member internal"`
 	Sort      string `form:"sort" binding:"omitempty,oneof=created updated pushed full_name"`
@@ -56,14 +60,22 @@ func (s *Server) listRepositories(c *gin.Context) {
 		fmt.Println("final url" + url)
 		res, err := http.Get(url)
 		if err != nil {
-			panic(err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
 		}
 		bData, _ := ioutil.ReadAll(res.Body)
+
 		var currentRepo []repository
-		json.Unmarshal(bData, &currentRepo)
+		err = json.Unmarshal(bData, &currentRepo)
+		if err != nil {
+			var repoError repositoryError
+			json.Unmarshal(bData, &repoError)
+			c.JSON(http.StatusBadRequest, gin.H{"error": repoError.Message})
+			return
+		}
 
 		for i := 0; i < len(currentRepo); i++ {
-			currentRepo[i].NextUrl = "/commits/" + user + "/" + currentRepo[i].Name
+			currentRepo[i].NextURL = "/commits/" + user + "/" + currentRepo[i].Name
 		}
 
 		c.JSON(200, currentRepo)
