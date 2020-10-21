@@ -1,0 +1,30 @@
+--- 
+services: 
+    api: 
+        build: 
+            context: "."
+            dockerfile: ./build/production/api/Dockerfile
+        container_name: "meisterwerk-api"
+        ports:
+            - "8000:8000"
+        dns:
+            - 8.8.8.8
+        environment: 
+            REDIS_HOST: "redis:6379"
+    redis: 
+        container_name: "meisterwerk-redis"
+        environment: 
+            ALLOW_EMPTY_PASSWORD: "yes"
+    websites: 
+        build: 
+            context: "."
+            dockerfile: ./build/production/web/Dockerfile
+            args:
+                REACT_APP_HOST_API: "127.0.0.1:8000"
+        container_name: "meisterwerk-web"
+        ports:
+            - "3001:3001"
+        links:
+            - api
+version: "3"
+    
