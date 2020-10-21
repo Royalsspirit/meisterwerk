@@ -3,56 +3,61 @@ import PropTypes from "prop-types";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
-
+import Card from 'react-bootstrap/Card'
+import MyModal from './Modal'
 import Commit from "./Commit";
 
 class List extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      message: this.props.repositories.errorMessage
+    }
   }
+
   componentDidMount() {
-    this.props.loadRepositories("Facebook");
-    console.log("repositories", this.props.repositories);
+    this.props.loadRepositories("Facebook")
   }
+
   commits = (e) => {
     this.props.loadCommits("Facebook", e);
   };
   render() {
     return (
-      <div className="App">
-        <Container>
-          <Row>
-            <Col sm={5}>
-              <Table striped bordered hover variant="dark">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.repositories &&
-                    this.props.repositories.map((v, k) => {
-                      return (
-                        <tr key={k}>
-                          <td>{k}</td>
-                          <td onClick={() => this.commits(v.name)}>{v.name}</td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </Col>
-            <Col sm={7}>
-	      { this.props.commits && (
-
-              <Commit commits={this.props.commits} />
-	      )}
-            </Col>
-          </Row>
-        </Container>
-      </div>
+      <Row>
+        <Col sm={5}>
+          {
+            this.props.errorMessage ? <MyModal message={this.props.errorMessage} />:''
+          }
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Project name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.repositories &&
+                this.props.repositories.map((v, k) => {
+                  return (
+                    <tr key={k}>
+                      <td onClick={() => this.commits(v.name)}>{v.name}</td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </Table>
+        </Col>
+        <Col sm={7}>
+          { this.props.commits.length > 0 ? (
+                <Commit commits={this.props.commits} />
+          ):(
+            <Card style={{paddingTop:'5px'}}>
+              <Card.Body>Please select a project in sidebar.</Card.Body>
+            </Card>
+          )
+        }
+        </Col>
+      </Row>
     );
   }
 }

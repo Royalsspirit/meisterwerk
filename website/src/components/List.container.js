@@ -4,7 +4,8 @@ import List from './List'
 
 const mapStateToProps = state => ({
   repositories: state.repositories.list,
-  commits: state.repositories.commits
+  commits: state.repositories.commits,
+  errorMessage: state.repositories.errorMessage
 })
 
 const mapDispatchToProps = (dispatch) => ({

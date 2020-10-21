@@ -1,6 +1,7 @@
 const intialState = {
 	commits: [],
-	list: [],
+  list: [],
+  errorMessage: null
 }
 const repositories = (state = intialState, action) => {
 	console.log('action',action)
@@ -8,22 +9,22 @@ const repositories = (state = intialState, action) => {
     case 'LIST_REPO':
       return {
         ...state,
-	list: action.data,
+	      list: action.data,
       }
     case 'LIST_REPO_FAIL':
       return {
-	...state,
-	errorMessage: action.errorMessage
+        ...state,
+        errorMessage: action.message
       }
     case 'LIST_COMMITS':
       return {
-	...state,
-	commits: action.data
+        ...state,
+        commits: action.data
       }
     case 'LIST_COMMITS_FAIL':
       return {
-	...state,
-	errorMessage: action.errorMessage
+        ...state,
+        errorMessage: action.message
       }
 
     default:
