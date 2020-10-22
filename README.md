@@ -23,6 +23,26 @@ Also to manage all app together, need to install docker-compose
 https://docs.docker.com/compose/install/
 ```
 
+### Repository layout
+
+Inspired by this [project-layout](https://github.com/golang-standards/project-layout).
+#### `/internal`
+
+  This is actual application code go.
+  
+#### `/website`
+
+  This is the place to put your project's website data. Here is a reactjs project
+  
+#### `/cmd`
+
+  This is where a main package can be found
+
+#### `/build`
+
+  Packaging and Continuous Integration.
+
+
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
