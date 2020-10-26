@@ -28,11 +28,11 @@ https://docs.docker.com/compose/install/
 Inspired by this [project-layout](https://github.com/golang-standards/project-layout).
 #### `/internal`
 
-  This is actual application code go.
+  This is actual api code go. See [doc](https://github.com/Royalsspirit/meisterwerk/tree/main/internal/api)
   
 #### `/website`
 
-  This is the place to put your project's website data. Here is a reactjs project
+  This is the place to put your project's website data. Here is a reactjs project. See [doc](https://github.com/Royalsspirit/meisterwerk/tree/main/website)
   
 #### `/cmd`
 
