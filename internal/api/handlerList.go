@@ -54,7 +54,7 @@ func (s *Server) listRepositories(c *gin.Context) {
 			url = url + "?" + strings.Join(parameters, "&")
 		}
 		fmt.Println("final url" + url)
-		res, err := http.Get(url)
+		res, err := s.HttpClient.Get(url)
 		if err != nil {
 			panic(err)
 		}
