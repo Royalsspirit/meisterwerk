@@ -1,63 +1,80 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import Container from "react-bootstrap/Container";
-
-import Commit from "./Commit";
+import React from 'react'
+import PropTypes from 'prop-types'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
+import MyModal from './Modal'
+import Commit from './Commit'
+import Card from 'react-bootstrap/Card'
 
 class List extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.props.loadRepositories("Facebook");
-    console.log("repositories", this.props.repositories);
-  }
-  commits = (e) => {
-    this.props.loadCommits("Facebook", e);
-  };
-  render() {
-    return (
-      <div className="App">
-        <Container>
-          <Row>
-            <Col sm={5}>
-              <Table striped bordered hover variant="dark">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.repositories &&
-                    this.props.repositories.map((v, k) => {
-                      return (
-                        <tr key={k}>
-                          <td>{k}</td>
-                          <td onClick={() => this.commits(v.name)}>{v.name}</td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </Col>
-            <Col sm={7}>
-	      { this.props.commits && (
+    constructor(props) {
+        super(props)
+        this.state = {
+            message: this.props.repositories.errorMessage,
+        }
+    }
 
-              <Commit commits={this.props.commits} />
-	      )}
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    );
-  }
+    componentDidMount() {
+        this.props.loadRepositories('Facebook')
+    }
+
+    commits = (e) => {
+        this.props.loadCommits('Facebook', e)
+    }
+    render() {
+        return (
+            <Row>
+                {this.props.errorMessage ? (
+                    <MyModal message={this.props.errorMessage} />
+                ) : (
+                    ''
+                )}
+                <Navbar
+                    expand="xs"
+                    bg="dark"
+                    variant="dark"
+                    style={{ display: 'inline' }}
+                >
+                    <Navbar.Toggle />
+                    <Navbar.Collapse>
+                        <Nav className="mr-auto flex-column">
+                            {this.props.repositories &&
+                                this.props.repositories.map((v, k) => {
+                                    return (
+                                        <Nav.Item key={k}>
+                                            <Nav.Link
+                                                eventKey={k}
+                                                onClick={() =>
+                                                    this.commits(v.name)
+                                                }
+                                            >
+                                                {v.name}
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                    )
+                                })}
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+                <Col>
+                    {this.props.commits.length > 0 ? (
+                        <Commit commits={this.props.commits} />
+                    ) : (
+                        <Card style={{ paddingTop: '5px' }}>
+                            <Card.Body>
+                                Please select a project in sidebar.
+                            </Card.Body>
+                        </Card>
+                    )}
+                </Col>
+            </Row>
+        )
+    }
 }
 List.propTypes = {
-   loadRepositories: PropTypes.func.isRequired,
-   loadCommits: PropTypes.func.isRequired,	
+    loadRepositories: PropTypes.func.isRequired,
+    loadCommits: PropTypes.func.isRequired,
 }
-export default List;
+export default List
