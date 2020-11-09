@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Table from "react-bootstrap/Table";
-import Card from 'react-bootstrap/Card'
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import MyModal from './Modal'
 import Commit from "./Commit";
+import Card from 'react-bootstrap/Card'
 
 class List extends React.Component {
   constructor(props) {
@@ -25,29 +26,22 @@ class List extends React.Component {
   render() {
     return (
       <Row>
-        <Col sm={5}>
           {
             this.props.errorMessage ? <MyModal message={this.props.errorMessage} />:''
           }
-          <Table striped bordered hover variant="dark">
-            <thead>
-              <tr>
-                <th>Project name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.props.repositories &&
-                this.props.repositories.map((v, k) => {
-                  return (
-                    <tr key={k}>
-                      <td onClick={() => this.commits(v.name)}>{v.name}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
-        </Col>
-        <Col sm={7}>
+		<Navbar bg="dark" variant="dark" style={{"display":"inline"}}>
+	        <Nav className="flex-column">
+		{this.props.repositories &&
+				this.props.repositories.map((v, k) => {
+				  return (
+				      <Nav.Item>
+				         <Nav.Link onClick={() => this.commits(v.name)}>{v.name}</Nav.Link>
+				      </Nav.Item>
+				  );
+				})}
+		</Nav>
+		</Navbar>
+        <Col>
           { this.props.commits.length > 0 ? (
                 <Commit commits={this.props.commits} />
           ):(
@@ -56,7 +50,7 @@ class List extends React.Component {
             </Card>
           )
         }
-        </Col>
+	</Col>
       </Row>
     );
   }
