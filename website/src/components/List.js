@@ -7,6 +7,8 @@ import Nav from 'react-bootstrap/Nav'
 import MyModal from './Modal'
 import Commit from './Commit'
 import Card from 'react-bootstrap/Card'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 class List extends React.Component {
     constructor(props) {
@@ -25,7 +27,7 @@ class List extends React.Component {
     }
     render() {
         return (
-            <Row>
+            <Row className="m-0">
                 {this.props.errorMessage ? (
                     <MyModal message={this.props.errorMessage} />
                 ) : (
@@ -36,9 +38,26 @@ class List extends React.Component {
                     bg="dark"
                     variant="dark"
                     style={{ display: 'inline' }}
+                    className="overflow-hidden"
                 >
-                    <Navbar.Toggle />
+                    <Col className="p-0" xs="1" md="1">
+                        <Navbar.Toggle />
+                    </Col>
                     <Navbar.Collapse>
+                        <Form inline className="align-items-center my-2">
+                            <Form.Row>
+                                <Col xs="8" md="auto">
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Search"
+                                        className="mr-sm-2"
+                                    />
+                                </Col>
+                                <Col xs="auto" md="auto">
+                                    <Button variant="primary">Search</Button>
+                                </Col>
+                            </Form.Row>
+                        </Form>
                         <Nav className="mr-auto flex-column">
                             {this.props.repositories &&
                                 this.props.repositories.map((v, k) => {
@@ -58,7 +77,7 @@ class List extends React.Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Col>
+                <Col className="p-0 pl-md-2">
                     {this.props.commits.length > 0 ? (
                         <Commit commits={this.props.commits} />
                     ) : (
