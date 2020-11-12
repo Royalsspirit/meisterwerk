@@ -8,14 +8,12 @@ import Col from 'react-bootstrap/Col'
 const App = () => {
     return (
         <div className="App">
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <header className="App-header">
+
+<header className="App-header">
                             <img src={logo} className="App-logo" alt="logo" />
                         </header>
-                    </Col>
-                </Row>
+            <Container fluid>
+
                 <List />
             </Container>
         </div>
