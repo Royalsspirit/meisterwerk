@@ -57,7 +57,7 @@ func (s *Server) listRepositories(c *gin.Context) {
 		if len(parameters) > 0 {
 			url = url + "?" + strings.Join(parameters, "&")
 		}
-		fmt.Println("final url" + url)
+		fmt.Println("final url " + url)
 		res, err := s.HttpClient.Get(url)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
