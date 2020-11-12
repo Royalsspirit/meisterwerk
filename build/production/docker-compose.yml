@@ -11,6 +11,7 @@ services:
             - 8.8.8.8
         environment: 
             REDIS_HOST: "redis:6379"
+            GITHUB_TOKEN: "${GITHUB_TOKEN}"
     redis: 
         container_name: "meisterwerk-redis"
         environment: 
