@@ -84,7 +84,7 @@ const List = () => {
             </Navbar>
             <Col className="p-0 pl-md-2">
                 {commits.length > 0 ? (
-                    <Commit commits={this.props.commits} />
+                    <Commit commits={commits} />
                 ) : (
                     <Card style={{ paddingTop: '5px' }}>
                         <Card.Body>
