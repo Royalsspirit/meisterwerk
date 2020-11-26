@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cache/persistence"
 
+	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -14,17 +15,19 @@ import (
 
 // Server server
 type Server struct {
-	Env       string
-	Port      string
-	RedisHost string
+	Env        string
+	Port       string
+	RedisHost  string
+	HttpClient http.Client
 }
 
 // NewServer newServer
 func NewServer(conf *Server) *Server {
 	return &Server{
-		Env:       conf.Env,
-		Port:      conf.Port,
-		RedisHost: conf.RedisHost,
+		Env:        conf.Env,
+		Port:       conf.Port,
+		RedisHost:  conf.RedisHost,
+		HttpClient: conf.HttpClient,
 	}
 }
 

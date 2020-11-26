@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	//	"github.com/gin-gonic/gin/binding"
 	"io/ioutil"
-	"net/http"
 )
 
 /**
@@ -56,7 +55,7 @@ func (s *Server) commits(c *gin.Context) {
 	user := c.Param("user")
 	var url string = "https://api.github.com/repos/" + user + "/" + name + "/commits?per_page=20&page=1"
 
-	res, err := http.Get(url)
+	res, err := s.HttpClient.Get(url)
 
 	if err != nil {
 		panic(err)
