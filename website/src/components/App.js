@@ -1,7 +1,7 @@
 import React from 'react'
 import logo from './logo.svg'
 import './App.css'
-import List from './List.container'
+import List from './List'
 import Container from 'react-bootstrap/Container'
 const App = () => {
     return (
