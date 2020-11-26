@@ -42,23 +42,30 @@ Inspired by this [project-layout](https://github.com/golang-standards/project-la
 
   Packaging and Continuous Integration.
 
-
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+A step by step series of examples that tell you how to get a development env running.
 
-To run applications:
+If you want to use the api as standalone app without docker, you need to define a environment variable in order to not be restricted by the api github limit.
+To do that, create a .env file in current directory with this content:
+```
+GITHUB_TOKEN=MY_TOKEN_GITHUB
+```
+then type:
+```
+go run cmd/api/main.go
+```
+Otherwise, in case you prefer run all together move this .env file into `build` directory in order to be interpreted by docker-compose
+then type from the current directory:
 ```
 make up
 ```
-
 Front application will be reachable on port 3001
 
 To clean all docker environment
 ```
 make clean
 ```
-
 ## Built With
 ### Front
 * [react](https://github.com/facebook/react) - React is a JavaScript library for building user interfaces.
