@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type repository struct {
@@ -29,12 +28,25 @@ type listParameters struct {
 	Per_page  int    `form:"per_page" validate:"omitempty,numeric"`
 	Page      int    `form:"page" binding:"omitempty,numeric"`
 }
+type queryBindinCustom struct {
+}
 
+func (q *queryBindinCustom) Name() string {
+	return "query"
+}
+func (q *queryBindinCustom) Bind(req *http.Request, obj interface{}) error {
+	return nil
+}
 func (s *Server) listRepositories(c *gin.Context) {
 	user := c.Param("user")
+	fmt.Println("user", user)
 	var b listParameters
-	fmt.Println("b", binding.Query)
-	if err := c.ShouldBindWith(&b, binding.Query); err == nil {
+	fmt.Println("b", b)
+	var qb queryBindinCustom
+	if err := c.ShouldBindWith(&b, &qb); err != nil {
+		fmt.Println("error", err)
+	}
+	if err := c.ShouldBindWith(&b, &qb); err == nil {
 		fmt.Println("bb", b)
 		var url string = "https://api.github.com/users/" + user + "/repos"
 		var parameters []string
@@ -58,7 +70,7 @@ func (s *Server) listRepositories(c *gin.Context) {
 			url = url + "?" + strings.Join(parameters, "&")
 		}
 		fmt.Println("final url " + url)
-		res, err := s.HttpClient.Get(url)
+		res, err := s.HTTPClient.Get(url)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -70,6 +82,7 @@ func (s *Server) listRepositories(c *gin.Context) {
 		if err != nil {
 			var repoError repositoryError
 			json.Unmarshal(bData, &repoError)
+			fmt.Println("error", err)
 			c.JSON(http.StatusBadRequest, gin.H{"error": repoError.Message})
 			return
 		}
@@ -81,6 +94,7 @@ func (s *Server) listRepositories(c *gin.Context) {
 		c.JSON(200, currentRepo)
 
 	} else {
+		fmt.Println("ici")
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 

@@ -2,7 +2,9 @@ package api
 
 import (
 	"encoding/json"
+
 	"github.com/gin-gonic/gin"
+
 	//	"github.com/gin-gonic/gin/binding"
 	"io/ioutil"
 )
@@ -55,7 +57,7 @@ func (s *Server) commits(c *gin.Context) {
 	user := c.Param("user")
 	var url string = "https://api.github.com/repos/" + user + "/" + name + "/commits?per_page=20&page=1"
 
-	res, err := s.HttpClient.Get(url)
+	res, err := s.HTTPClient.Get(url)
 
 	if err != nil {
 		panic(err)
