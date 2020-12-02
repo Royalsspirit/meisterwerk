@@ -29,7 +29,7 @@ func main() {
 		RedisHost: os.Getenv("REDIS_HOST"),
 		Port:      "8000",
 		Env:       "dev",
-		HttpClient: http.Client{
+		HTTPClient: &http.Client{
 			Transport: &AddHeaderTransport{},
 		},
 	}
