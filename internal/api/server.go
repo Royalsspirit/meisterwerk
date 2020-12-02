@@ -13,12 +13,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// MyCustomHTTPClient MyCustomHTTPClient
+type MyCustomHTTPClient interface {
+	Get(url string) (resp *http.Response, err error)
+}
+
 // Server server
 type Server struct {
 	Env        string
 	Port       string
 	RedisHost  string
-	HttpClient http.Client
+	HTTPClient MyCustomHTTPClient
 }
 
 // NewServer newServer
@@ -27,7 +32,7 @@ func NewServer(conf *Server) *Server {
 		Env:        conf.Env,
 		Port:       conf.Port,
 		RedisHost:  conf.RedisHost,
-		HttpClient: conf.HttpClient,
+		HTTPClient: conf.HTTPClient,
 	}
 }
 
@@ -40,9 +45,7 @@ func gitURL() gin.HandlerFunc {
 		// access the status we are sending
 	}
 }
-
-// Run run
-func (s *Server) Run() {
+func (s *Server) SetupRouter() *gin.Engine {
 	r := gin.Default()
 	RedisHost := s.RedisHost
 	r.Use(gitURL())
@@ -58,5 +61,12 @@ func (s *Server) Run() {
 			}})
 	})
 
+	return r
+
+}
+
+// Run run
+func (s *Server) Run() {
+	r := s.SetupRouter()
 	r.Run("0.0.0.0:" + s.Port) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
